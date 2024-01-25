@@ -22,7 +22,7 @@ const formattedDate = computed(() => {
 </script>
 
 <template>
-    <div class="flex">
+    <div class="flex hover:bg-discord_dark w-full">
         <img class="bg-slate-600 h-10 w-10 rounded-full mr-2" :src="message.user.avatarUrl">
         <div>
             {{ message.user.username }}

@@ -2,7 +2,7 @@
 </script>
 
 <template>
-    <div class="bg-gray-800 text-white h-full">
+    <div class="bg-discord p-4 text-white h-full">
         <RouterView />
     </div>
 </template>
