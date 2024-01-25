@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router';
 import ChatView from '@/views/ChatView.vue';
 
 const router = createRouter({
@@ -6,10 +6,10 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
+      name: 'chat',
       component: ChatView
-    },
+    }
   ]
-})
+});
 
-export default router
+export default router;

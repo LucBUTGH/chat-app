@@ -2,12 +2,7 @@
 </script>
 
 <template>
-  <header>
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+    <div class="bg-gray-800 text-white h-full">
+        <RouterView />
     </div>
-  </header>
-
-  <RouterView />
 </template>
