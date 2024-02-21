@@ -3,6 +3,7 @@ import ChatView from '@/views/ChatView.vue';
 import { supabase } from '../../supabase';
 
 
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -28,13 +29,16 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to,frm,next) => {
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
   const {data} = await supabase.auth.getSession()
   const isLoggedIn = !!data.session
 
-  if(to.matched.some(record => record.meta.requiresAuth) && !isLoggedIn){
+  if(requiresAuth && !isLoggedIn){
     next({name: 'login'})
+  }else if(!requiresAuth && isLoggedIn){
+    next({name: 'chat'})
   }else{
-    next();
+    next()
   }
 })
 

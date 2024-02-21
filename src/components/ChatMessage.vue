@@ -16,8 +16,8 @@ function formatDate(date) {
 }
 
 const formattedDate = computed(() => {
-    const date = props.message.date;
-    return formatDate(date);
+    const date = props.message.created_at;
+    return formatDate(new Date(date));
 });
 
 const emit = defineEmits(['delete'])
@@ -27,9 +27,9 @@ const emit = defineEmits(['delete'])
 
 <template>
     <div class="flex items-center hover:bg-discord_dark w-full">
-        <img class="bg-slate-600 h-10 w-10 rounded-full mr-2" :src="message.user.avatarUrl">
+        <img class="bg-slate-600 h-10 w-10 rounded-full mr-2" :src="message.author_url">
         <div>
-            {{ message.user.username }}
+            {{ message.author.username }}
             <span class="ml-2 text-xs text-opacity-40 text-gray-50">        
                 {{ formattedDate }}
             </span>
@@ -37,7 +37,7 @@ const emit = defineEmits(['delete'])
                 <TrashIcon class="w-4 h-4"/>
             </button>
             <div>
-                {{ message.text }}
+                {{ message.content }}
             </div>
         </div>
     </div>

@@ -1,25 +1,29 @@
 <script setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import ChatMessage from '@/components/ChatMessage.vue';
+import AppNavbar from '@/components/AppNavbar.vue';
+import { useUserStore } from '@/stores/user';
+import { storeToRefs } from 'pinia';
+import { insertMessage, fetchMessage } from '@/api/message';
+
+
+const { user } = storeToRefs(useUserStore());
 
 const messageText = ref('');
 const messageList = ref([]);
 const textarea = ref(null)
 
-const addMessage = () => {
-    if(!messageText.value){
-        return;
-    }
+onMounted(async () => {
+    messageList.value = await fetchMessage();
+    textarea.value.focus()
+})
 
-    messageList.value.push({
-        id: Math.random().toString(32).slice(2),
-        text: messageText.value,
-        date: new Date(),
-        user: {
-            username: 'Kuramaa',
-            avatarUrl: 'https://media.tenor.com/EFw1DIQfx5kAAAAC/reshiram-pokemon-reshiram.gif'
-        }
-    });
+const  addMessage = async () => {
+
+    if(!messageText.value) return;
+
+    insertMessage(messageText.value, user.value.id);
+
     messageText.value = '';
     textarea.value.focus()
 }
@@ -31,6 +35,7 @@ const deleteMessage = (id) => {
 </script>
 
 <template>
+    <AppNavbar/>
     <div>
         <div v-for="(message, index) in messageList" class="p-4" :key="index">
             <ChatMessage @delete="deleteMessage" :message="message"></ChatMessage>
@@ -40,7 +45,7 @@ const deleteMessage = (id) => {
             <textarea
                 ref="textarea"
                 @keyup.enter.exact="addMessage"
-                v-model="messageText" name="message" id="message" rows="1" 
+                v-model="messageText" name="message" id="message" rows="1"
                 class="bg-discord_light resize-none rounded-md mx-auto w-full p-2 text-white" 
                 placeholder="Envoyer un message">
             </textarea>
