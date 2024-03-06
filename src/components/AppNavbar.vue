@@ -1,30 +1,33 @@
 <script setup>
-import { useUserStore } from '../stores/user';
-import { storeToRefs } from 'pinia';
+import { useUserStore } from '@/stores/user';
 import { supabase } from '../../supabase';
-import router from '@/router';
+import { storeToRefs } from 'pinia';
+import { useRouter } from 'vue-router';
 import { ref } from 'vue';
 
-const { user } = storeToRefs(useUserStore())
+const { user } = storeToRefs(useUserStore());
+const { push: routerPush } = useRouter();
+const loading = ref(false);
 
-const loading = ref(false)
-
-const signOut = async () => {
+const logout = async () => {
     loading.value = true;
     await supabase.auth.signOut();
-    router.push({name: 'login'})
-}
-
+    routerPush({ name: 'login' });
+};
 </script>
 
 <template>
-    <header class="flex items-align p-2">
-        <div>Username : 
-            <span class="hover: underline"> {{  user?.username }} </span>
+    <header class="flex flex-row items-center p-3">
+        <div v-if="user" class="flex flex-row">
+            <h1>Username : {{ user.username }}</h1>
         </div>
-        <button @click="signOut" class="ml-auto outline rounded-lg p-2">
-        <span v-if=loading>...</span>
-        <span v-else>Se déconnecter</span>
+        <button
+            :loading="loading"
+            @click="logout"
+            class="ml-auto p-2 outline rounded-md hover:text-blue-500 transition-all"
+        >
+            <span v-if="loading">...</span>
+            <span v-else>Se déconnecter</span>
         </button>
     </header>
 </template>

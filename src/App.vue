@@ -1,9 +1,9 @@
 <script setup>
-    import { supabase } from '../supabase';
-    import { useUserStore } from './stores/user';
-    supabase.auth.onAuthStateChange((_, session) => {
-        useUserStore().fetchUserProfile(session?.user?.id);
-    })
+import { supabase } from '../supabase';
+import { useUserStore } from './stores/user';
+supabase.auth.onAuthStateChange((_, session) => {
+    useUserStore().fetchUserProfile(session?.user?.id);
+});
 </script>
 
 <template>
