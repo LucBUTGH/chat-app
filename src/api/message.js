@@ -18,6 +18,13 @@ export const insertMessage = async (content, author_id) => {
         });
 };
 
+export const deleteMessageFromDB = async (id) => {
+    const { error } = await supabase.from('messages').delete().eq('id', id);
+    if (error) {
+        console.error('Error deleting message', error);
+    }
+};
+
 export const fetchMessage = async () => {
     const { data, error } = await supabase
         .from('messages')
